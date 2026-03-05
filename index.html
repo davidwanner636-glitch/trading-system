@@ -63,139 +63,52 @@
             transform: translateY(-4px);
         }
 
-        .emotion-bar {
-            height: 8px;
-            background: linear-gradient(90deg, #ef4444, #f59e0b, #10b981);
-            border-radius: 4px;
+        .emotion-meter {
             position: relative;
+            width: 100%;
+            height: 30px;
+            background: linear-gradient(90deg, #3b82f6, #10b981, #f59e0b, #ef4444);
+            border-radius: 15px;
             margin: 1rem 0;
         }
 
-        .emotion-pointer {
+        .emotion-indicator {
             position: absolute;
-            top: -4px;
-            width: 16px;
-            height: 16px;
+            top: -5px;
+            width: 40px;
+            height: 40px;
             background: white;
             border: 3px solid var(--primary-color);
             border-radius: 50%;
             transition: left 0.5s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
 
-        .theme-tag {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            margin: 0.25rem;
-            font-size: 0.875rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .emotion-label {
+            position: absolute;
+            top: -25px;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            font-weight: bold;
+            white-space: nowrap;
         }
 
-        .theme-tag:hover {
-            transform: scale(1.05);
-        }
-
-        .theme-hot { background: #fef2f2; color: #ef4444; border: 1px solid #ef4444; }
-        .theme-warm { background: #fffbeb; color: #f59e0b; border: 1px solid #f59e0b; }
-        .theme-cool { background: #eff6ff; color: #3b82f6; border: 1px solid #3b82f6; }
-        .theme-cold { background: #f9fafb; color: #6b7280; border: 1px solid #6b7280; }
-
-        .volume-indicator {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 0.5rem;
-            animation: pulse 2s infinite;
-        }
-
-        .volume-high { background: #ef4444; }
-        .volume-medium { background: #f59e0b; }
-        .volume-low { background: #10b981; }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(1.2); }
-        }
-
-        .method-card {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .method-card:hover {
-            border-color: var(--primary-color);
-            transform: translateX(4px);
-            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.15);
-        }
-
-        .method-card.active {
-            border-color: var(--primary-color);
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.05), rgba(239, 68, 68, 0.05));
-        }
-
-        .tab-button {
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-
-        .tab-button.active {
-            background: var(--primary-color);
+        .stock-ticker {
+            background: rgba(0, 0, 0, 0.8);
             color: white;
-            border-color: var(--primary-color);
+            padding: 0.5rem 0;
+            overflow: hidden;
+            white-space: nowrap;
         }
 
-        .tab-button:not(.active):hover {
-            border-color: var(--primary-color);
-            background: rgba(245, 158, 11, 0.1);
+        .ticker-content {
+            display: inline-block;
+            animation: scroll-left 30s linear infinite;
         }
 
-        .tool-button {
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: none;
-        }
-
-        .tool-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .floating-menu {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            z-index: 1000;
-        }
-
-        .menu-button {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            transition: all 0.3s ease;
-        }
-
-        .menu-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        @keyframes scroll-left {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
         }
 
         .modal {
@@ -236,61 +149,77 @@
             color: #6b7280;
         }
 
-        .progress-ring {
-            transform: rotate(-90deg);
+        .payment-modal {
+            max-width: 400px;
         }
 
-        .progress-ring-circle {
-            transition: stroke-dashoffset 0.5s ease;
-        }
-
-        .stock-ticker {
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 0.5rem 0;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-
-        .ticker-content {
+        .premium-badge {
             display: inline-block;
-            animation: scroll-left 30s linear infinite;
-        }
-
-        @keyframes scroll-left {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-
-        .emotion-meter {
-            position: relative;
-            width: 100%;
-            height: 30px;
-            background: linear-gradient(90deg, #3b82f6, #10b981, #f59e0b, #ef4444);
-            border-radius: 15px;
-            margin: 1rem 0;
-        }
-
-        .emotion-indicator {
-            position: absolute;
-            top: -5px;
-            width: 40px;
-            height: 40px;
-            background: white;
-            border: 3px solid var(--primary-color);
-            border-radius: 50%;
-            transition: left 0.5s ease;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .emotion-label {
-            position: absolute;
-            top: -25px;
-            transform: translateX(-50%);
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
             font-size: 0.75rem;
             font-weight: bold;
-            white-space: nowrap;
+            margin-left: 0.5rem;
         }
+
+        .locked-content {
+            filter: blur(5px);
+            pointer-events: none;
+            position: relative;
+        }
+
+        .locked-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        .settings-panel {
+            position: fixed;
+            right: -400px;
+            top: 0;
+            width: 400px;
+            height: 100vh;
+            background: white;
+            box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+            transition: right 0.3s ease;
+            z-index: 1500;
+            overflow-y: auto;
+        }
+
+        .settings-panel.active {
+            right: 0;
+        }
+
+        .theme-tag {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            margin: 0.25rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .theme-tag:hover {
+            transform: scale(1.05);
+        }
+
+        .theme-hot { background: #fef2f2; color: #ef4444; border: 1px solid #ef4444; }
+        .theme-warm { background: #fffbeb; color: #f59e0b; border: 1px solid #f59e0b; }
+        .theme-cool { background: #eff6ff; color: #3b82f6; border: 1px solid #3b82f6; }
+        .theme-cold { background: #f9fafb; color: #6b7280; border: 1px solid #6b7280; }
 
         .buy-sell-indicator {
             display: inline-block;
@@ -304,6 +233,66 @@
         .buy-signal { background: #10b981; color: white; }
         .sell-signal { background: #ef4444; color: white; }
         .hold-signal { background: #f59e0b; color: white; }
+
+        .tool-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .tool-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .floating-menu {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 1rem;
+        }
+
+        .menu-button {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .menu-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -321,6 +310,7 @@
                 <div class="flex items-center space-x-4">
                     <i class="ri-candle-chart-line text-2xl text-amber-500"></i>
                     <h1 class="text-xl font-bold text-gray-800">股市修行录</h1>
+                    <span class="premium-badge">专业版</span>
                 </div>
                 <div class="hidden md:flex space-x-6">
                     <a href="#dashboard" class="text-gray-700 hover:text-amber-500 transition">仪表盘</a>
@@ -329,12 +319,19 @@
                     <a href="#methods" class="text-gray-700 hover:text-amber-500 transition">交易战法</a>
                     <a href="#tools" class="text-gray-700 hover:text-amber-500 transition">实战工具</a>
                 </div>
-                <div class="flex space-x-2">
+                <div class="flex items-center space-x-4">
+                    <div class="user-info">
+                        <div class="user-avatar" id="user-avatar">游</div>
+                        <div>
+                            <div class="text-sm font-medium" id="user-name">游资新秀</div>
+                            <div class="text-xs text-gray-500">Lv.1</div>
+                        </div>
+                    </div>
+                    <button onclick="openSettings()" class="p-2 text-gray-600 hover:text-amber-500 transition">
+                        <i class="ri-settings-3-line text-xl"></i>
+                    </button>
                     <button onclick="refreshData()" class="p-2 text-gray-600 hover:text-amber-500 transition">
                         <i class="ri-refresh-line text-xl"></i>
-                    </button>
-                    <button onclick="toggleDarkMode()" class="p-2 text-gray-600 hover:text-amber-500 transition">
-                        <i class="ri-moon-line text-xl"></i>
                     </button>
                 </div>
             </div>
@@ -357,6 +354,10 @@
                         <span class="text-sm">更新时间</span>
                         <div class="font-bold" id="current-time">--:--:--</div>
                     </div>
+                    <div class="bg-white/20 backdrop-blur px-4 py-2 rounded-lg">
+                        <span class="text-sm">用户等级</span>
+                        <div class="font-bold">专业用户</div>
+                    </div>
                 </div>
             </div>
 
@@ -366,8 +367,10 @@
                     <div class="text-sm text-gray-600 mb-1">市场情绪</div>
                     <div class="text-2xl font-bold text-red-500" id="emotion-score">72</div>
                     <div class="text-sm text-red-500">偏热</div>
-                    <div class="emotion-bar">
-                        <div class="emotion-pointer" id="emotion-pointer" style="left: 72%"></div>
+                    <div class="emotion-meter">
+                        <div class="emotion-indicator" id="emotion-main-indicator" style="left: 72%">
+                            <div class="emotion-label" style="left: 72%">偏热</div>
+                        </div>
                     </div>
                 </div>
                 <div class="stat-card">
@@ -402,6 +405,7 @@
                     <h3 class="text-xl font-bold mb-4 flex items-center">
                         <i class="ri-temp-hot-line text-red-500 mr-2"></i>
                         情绪温度计 Pro
+                        <span class="premium-badge">高级版</span>
                     </h3>
                     
                     <!-- 综合评分 -->
@@ -411,7 +415,7 @@
                             <span class="text-2xl font-bold text-amber-500" id="emotion-total">72</span>
                         </div>
                         <div class="emotion-meter">
-                            <div class="emotion-indicator" id="emotion-main-indicator" style="left: 72%">
+                            <div class="emotion-indicator" id="emotion-meter-indicator" style="left: 72%">
                                 <div class="emotion-label" style="left: 72%">偏热</div>
                             </div>
                         </div>
@@ -456,92 +460,48 @@
                                 <div class="text-sm text-gray-500">得分: 90</div>
                             </div>
                         </div>
-                        <div class="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
-                            <div>
-                                <div class="font-medium text-blue-700">指数表现</div>
-                                <div class="text-sm text-gray-600">权重15%</div>
-                            </div>
-                            <div class="text-right">
-                                <div class="font-bold text-blue-600">+1.2%</div>
-                                <div class="text-sm text-gray-500">得分: 65</div>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center p-3 bg-purple-50 rounded-lg">
-                            <div>
-                                <div class="font-medium text-purple-700">成交量</div>
-                                <div class="text-sm text-gray-600">权重10%</div>
-                            </div>
-                            <div class="text-right">
-                                <div class="font-bold text-purple-600">8523亿</div>
-                                <div class="text-sm text-gray-500">得分: 60</div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
-                <!-- 情绪周期节点 -->
+                <!-- 节点寻龙工具 -->
                 <div class="glass-card p-6">
                     <h3 class="text-xl font-bold mb-4 flex items-center">
-                        <i class="ri-pulse-line text-blue-500 mr-2"></i>
-                        情绪周期节点
+                        <i class="ri-dragon-line text-purple-500 mr-2"></i>
+                        节点寻龙工具
+                        <span class="premium-badge">专业版</span>
                     </h3>
                     
-                    <!-- 周期指示器 -->
-                    <div class="mb-6">
-                        <div class="relative">
-                            <div class="h-2 bg-gray-200 rounded-full mb-8"></div>
-                            <div class="absolute top-0 left-0 flex justify-between w-full">
-                                <div class="text-center" style="left: 0%">
-                                    <div class="w-4 h-4 bg-blue-500 rounded-full -mt-1"></div>
-                                    <div class="text-xs mt-2">冰点</div>
-                                </div>
-                                <div class="text-center" style="left: 25%">
-                                    <div class="w-4 h-4 bg-green-500 rounded-full -mt-1"></div>
-                                    <div class="text-xs mt-2">修复</div>
-                                </div>
-                                <div class="text-center" style="left: 50%">
-                                    <div class="w-4 h-4 bg-amber-500 rounded-full -mt-1"></div>
-                                    <div class="text-xs mt-2">升温</div>
-                                </div>
-                                <div class="text-center" style="left: 75%">
-                                    <div class="w-4 h-4 bg-red-500 rounded-full -mt-1"></div>
-                                    <div class="text-xs mt-2">高潮</div>
-                                </div>
-                                <div class="text-center" style="left: 90%">
-                                    <div class="w-4 h-4 bg-gray-500 rounded-full -mt-1"></div>
-                                    <div class="text-xs mt-2">分歧</div>
-                                </div>
-                            </div>
-                            <div class="absolute top-0" style="left: 72%">
-                                <div class="w-6 h-6 bg-amber-500 rounded-full -mt-2 border-4 border-white shadow-lg"></div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">当前情绪节点</label>
+                        <div class="bg-amber-50 border border-amber-200 rounded-lg p-3">
+                            <div class="font-bold text-amber-700">升温期 → 高潮期</div>
+                            <div class="text-sm text-gray-600 mt-1">
+                                涨停数量充足，连板高度突破，准备积极寻找龙头
                             </div>
                         </div>
                     </div>
 
-                    <!-- 当前阶段特征 -->
-                    <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
-                        <h4 class="font-bold text-amber-700 mb-2">当前阶段：升温期 → 高潮期</h4>
-                        <ul class="text-sm text-gray-700 space-y-1">
-                            <li>✅ 涨停数量达到50只以上</li>
-                            <li>✅ 连板高度突破4板限制</li>
-                            <li>✅ 市场赚钱效应明显</li>
-                            <li>⚠️ 投资者开始情绪亢奋</li>
-                            <li>⚠️ 需要警惕风险积累</li>
-                        </ul>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">今日龙头候选</label>
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between p-2 bg-red-50 rounded">
+                                <span class="font-medium">半导体龙头</span>
+                                <span class="text-sm text-red-600">4板 • 20亿</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 bg-amber-50 rounded">
+                                <span class="font-medium">AI概念龙头</span>
+                                <span class="text-sm text-amber-600">3板 • 15亿</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 bg-green-50 rounded">
+                                <span class="font-medium">新能源车龙头</span>
+                                <span class="text-sm text-green-600">2板 • 12亿</span>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- 操作建议 -->
-                    <div class="space-y-2">
-                        <button onclick="showEmotionAdvice('participate')" class="w-full tool-button bg-green-500 text-white">
-                            <i class="ri-play-line mr-2"></i>积极参与策略
-                        </button>
-                        <button onclick="showEmotionAdvice('cautious')" class="w-full tool-button bg-amber-500 text-white">
-                            <i class="ri-alert-line mr-2"></i>谨慎参与策略
-                        </button>
-                        <button onclick="showEmotionAdvice('observe')" class="w-full tool-button bg-blue-500 text-white">
-                            <i class="ri-eye-line mr-2"></i>观望等待策略
-                        </button>
-                    </div>
+                    <button onclick="showDragonHunting()" class="w-full tool-button bg-purple-500 text-white">
+                        <i class="ri-search-line mr-2"></i>开始寻龙
+                    </button>
                 </div>
             </div>
         </section>
@@ -555,6 +515,7 @@
                     <h3 class="text-xl font-bold mb-4 flex items-center">
                         <i class="ri-shopping-cart-line text-green-500 mr-2"></i>
                         买点分级系统
+                        <span class="premium-badge">完整版</span>
                     </h3>
                     
                     <div class="space-y-3">
@@ -570,7 +531,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="border-l-4 border-amber-500 pl-4 py-2 hover:bg-amber-50 transition cursor-pointer" onclick="showBuyPointDetail('second')">
                             <div class="flex justify-between items-center">
                                 <div>
@@ -583,7 +543,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="border-l-4 border-blue-500 pl-4 py-2 hover:bg-blue-50 transition cursor-pointer" onclick="showBuyPointDetail('third')">
                             <div class="flex justify-between items-center">
                                 <div>
@@ -596,100 +555,19 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="border-l-4 border-red-500 pl-4 py-2 hover:bg-red-50 transition cursor-pointer" onclick="showBuyPointDetail('fourth')">
-                            <div class="flex justify-between items-center">
-                                <div>
-                                    <h4 class="font-bold text-red-700">第四买点：高潮期</h4>
-                                    <p class="text-sm text-gray-600">情绪高潮，极度亢奋</p>
-                                </div>
-                                <div class="text-right">
-                                    <div class="text-xs text-gray-500">谨慎参与</div>
-                                    <div class="text-xs text-red-600 font-medium">极高风险</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="border-l-4 border-purple-500 pl-4 py-2 hover:bg-purple-50 transition cursor-pointer" onclick="showBuyPointDetail('theoretical')">
-                            <div class="flex justify-between items-center">
-                                <div>
-                                    <h4 class="font-bold text-purple-700">理论买点：理想化</h4>
-                                    <p class="text-sm text-gray-600">事后的完美买点参考</p>
-                                </div>
-                                <div class="text-right">
-                                    <div class="text-xs text-gray-500">学习目标</div>
-                                    <div class="text-xs text-purple-600 font-medium">追求标准</div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
-                <!-- 实时买卖信号 -->
+                <!-- 炸板低吸检测器 -->
                 <div class="glass-card p-6">
                     <h3 class="text-xl font-bold mb-4 flex items-center">
-                        <i class="ri-stock-line text-amber-500 mr-2"></i>
-                        实时买卖信号
+                        <i class="ri-fire-line text-red-500 mr-2"></i>
+                        炸板低吸检测器
+                        <span class="premium-badge">专业版</span>
                     </h3>
-
-                    <!-- 信号列表 -->
-                    <div class="space-y-3 mb-6">
-                        <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                            <div class="flex items-center">
-                                <span class="buy-sell-indicator buy-signal">买入</span>
-                                <div>
-                                    <div class="font-medium">半导体龙头</div>
-                                    <div class="text-sm text-gray-600">第二买点确认，涨停突破</div>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-green-600 font-bold">+3.2%</div>
-                                <div class="text-xs text-gray-500">10:35</div>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center justify-between p-3 bg-amber-50 rounded-lg">
-                            <div class="flex items-center">
-                                <span class="buy-sell-indicator hold-signal">持有</span>
-                                <div>
-                                    <div class="font-medium">人工智能概念</div>
-                                    <div class="text-sm text-gray-600">第三买点加速中，继续持有</div>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-amber-600 font-bold">+2.8%</div>
-                                <div class="text-xs text-gray-500">10:28</div>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
-                            <div class="flex items-center">
-                                <span class="buy-sell-indicator sell-signal">卖出</span>
-                                <div class="font-medium">消费电子跟风</div>
-                                <div class="text-sm text-gray-600">不及预期，拉升减仓</div>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-red-600 font-bold">-0.8%</div>
-                                <div class="text-xs text-gray-500">10:15</div>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
-                            <div class="flex items-center">
-                                <span class="buy-sell-indicator buy-signal">低吸</span>
-                                <div class="font-medium">新能源车炸板</div>
-                                <div class="text-sm text-gray-600">符合六原则，炸板低吸</div>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-blue-600 font-bold">-1.5%</div>
-                                <div class="text-xs text-gray-500">10:05</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 炸板低吸检测器 -->
+                    
                     <div class="bg-gray-50 rounded-lg p-4">
-                        <h4 class="font-bold mb-3">炸板低吸检测器</h4>
+                        <h4 class="font-bold mb-3">六原则检测</h4>
                         <div class="space-y-2">
                             <div class="flex justify-between items-center">
                                 <span class="text-sm">题材强度</span>
@@ -759,12 +637,134 @@
 
     <!-- 悬浮菜单 -->
     <div class="floating-menu">
-        <button class="menu-button" onclick="toggleMenu()">
-            <i class="ri-menu-line text-2xl"></i>
+        <button onclick="toggleUserInfo()" class="menu-button">
+            <i class="ri-user-line text-2xl"></i>
         </button>
     </div>
 
-    <!-- 模态框 -->
+    <!-- 设置面板 -->
+    <div class="settings-panel" id="settings-panel">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold">用户设置</h2>
+                <button onclick="closeSettings()" class="p-2">
+                    <i class="ri-close-line text-xl"></i>
+                </button>
+            </div>
+
+            <!-- 用户信息 -->
+            <div class="mb-6">
+                <h3 class="font-bold mb-3">用户信息</h3>
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <div class="flex items-center space-x-3 mb-3">
+                        <div class="user-avatar w-12 h-12">游</div>
+                        <div>
+                            <input type="text" id="settings-username" class="font-medium border-b border-gray-300 focus:border-amber-500 outline-none" value="游资新秀">
+                            <div class="text-sm text-gray-500">等级：Lv.1 专业用户</div>
+                        </div>
+                    </div>
+                    <button onclick="changeAvatar()" class="text-sm text-amber-600 hover:text-amber-700">
+                        <i class="ri-edit-line mr-1"></i>更换头像
+                    </button>
+                </div>
+            </div>
+
+            <!-- 交易偏好 -->
+            <div class="mb-6">
+                <h3 class="font-bold mb-3">交易偏好</h3>
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">风险承受能力</label>
+                        <select id="risk-tolerance" class="w-full p-2 border rounded">
+                            <option value="low">保守型</option>
+                            <option value="medium" selected>平衡型</option>
+                            <option value="high">激进型</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">最大仓位 (%)</label>
+                        <input type="number" id="max-position" class="w-full p-2 border rounded" value="80" min="10" max="100">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">止损设置 (%)</label>
+                        <input type="number" id="stop-loss" class="w-full p-2 border rounded" value="5" min="1" max="20">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 界面设置 -->
+            <div class="mb-6">
+                <h3 class="font-bold mb-3">界面设置</h3>
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">数据刷新间隔 (秒)</label>
+                        <select id="refresh-interval" class="w-full p-2 border rounded">
+                            <option value="3000">3秒</option>
+                            <option value="5000" selected>5秒</option>
+                            <option value="10000">10秒</option>
+                            <option value="30000">30秒</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">主题模式</label>
+                        <div class="flex space-x-2">
+                            <button class="flex-1 p-2 border rounded hover:bg-gray-50">浅色</button>
+                            <button class="flex-1 p-2 border rounded hover:bg-gray-50">深色</button>
+                            <button class="flex-1 p-2 border rounded hover:bg-gray-50">自动</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 保存设置 -->
+            <button onclick="saveSettings()" class="w-full tool-button bg-amber-500 text-white">
+                <i class="ri-save-line mr-2"></i>保存设置
+            </button>
+        </div>
+    </div>
+
+    <!-- 付费模态框 -->
+    <div id="payment-modal" class="modal">
+        <div class="modal-content payment-modal">
+            <button class="close-button" onclick="closePaymentModal()">
+                <i class="ri-close-line"></i>
+            </button>
+            <div class="text-center">
+                <div class="mb-4">
+                    <i class="ri-vip-crown-line text-6xl text-amber-500"></i>
+                </div>
+                <h2 class="text-2xl font-bold mb-2">解锁专业版功能</h2>
+                <p class="text-gray-600 mb-6">仅需0.1元，解锁全部高级功能</p>
+                
+                <div class="bg-amber-50 rounded-lg p-4 mb-6">
+                    <h3 class="font-bold text-amber-700 mb-2">专业版特权</h3>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li>✅ 情绪温度计 Pro版</li>
+                        <li>✅ 节点寻龙工具</li>
+                        <li>✅ 炸板低吸检测器</li>
+                        <li>✅ 个性化设置</li>
+                        <li>✅ 无限制使用所有功能</li>
+                    </ul>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-medium mb-2">验证码</label>
+                    <input type="text" id="payment-code" class="w-full p-3 border rounded-lg text-center font-mono text-lg" placeholder="请输入验证码">
+                    <p class="text-xs text-gray-500 mt-1">提示：验证码为 GUSHI2024</p>
+                </div>
+
+                <button onclick="processPayment()" class="w-full tool-button bg-amber-500 text-white mb-3">
+                    <i class="ri-vip-line mr-2"></i>立即解锁
+                </button>
+                
+                <button onclick="closePaymentModal()" class="w-full text-gray-500 hover:text-gray-700">
+                    暂不使用
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 通用模态框 -->
     <div id="modal" class="modal">
         <div class="modal-content">
             <button class="close-button" onclick="closeModal()">
@@ -775,68 +775,207 @@
     </div>
 
     <script>
-        // 全局数据
+        // 付费系统
+        class PaymentSystem {
+            constructor() {
+                this.verifyCode = 'GUSHI2024';
+                this.price = 0.1;
+                this.isPaid = this.checkPaymentStatus();
+            }
+
+            checkPaymentStatus() {
+                return localStorage.getItem('premium_access') === 'true';
+            }
+
+            requestPayment() {
+                const modal = document.getElementById('payment-modal');
+                modal.classList.add('active');
+                
+                return new Promise((resolve) => {
+                    window.paymentResolve = resolve;
+                });
+            }
+
+            processPayment(code) {
+                if (code === this.verifyCode) {
+                    localStorage.setItem('premium_access', 'true');
+                    localStorage.setItem('payment_time', new Date().toISOString());
+                    this.isPaid = true;
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        // 用户设置系统
+        class UserSettings {
+            constructor() {
+                this.settings = this.loadSettings();
+            }
+
+            loadSettings() {
+                const defaultSettings = {
+                    username: '游资新秀',
+                    avatar: '游',
+                    level: 1,
+                    riskTolerance: 'medium',
+                    maxPosition: 80,
+                    stopLoss: 5,
+                    refreshInterval: 5000,
+                    preferredThemes: ['半导体', '人工智能'],
+                    tradingStyle: 'dayTrading',
+                    notifications: {
+                        priceAlert: true,
+                        emotionAlert: true,
+                        tradeSignal: true
+                    }
+                };
+                
+                const saved = localStorage.getItem('user_settings');
+                return saved ? { ...defaultSettings, ...JSON.parse(saved) } : defaultSettings;
+            }
+
+            saveSettings() {
+                localStorage.setItem('user_settings', JSON.stringify(this.settings));
+            }
+
+            updateSettings(newSettings) {
+                this.settings = { ...this.settings, ...newSettings };
+                this.saveSettings();
+            }
+        }
+
+        // 全局变量
+        const paymentSystem = new PaymentSystem();
+        const userSettings = new UserSettings();
+        
         let currentData = {
             emotionScore: 72,
             limitUp: 42,
             limitDown: 3,
             volume: 8523,
-            northFlow: 65,
-            themes: [
-                { name: '半导体', change: 3.2, count: 12, level: 'hot' },
-                { name: '人工智能', change: 2.8, count: 8, level: 'hot' },
-                { name: '新能源车', change: 1.9, count: 6, level: 'warm' },
-                { name: '消费电子', change: 1.2, count: 4, level: 'warm' },
-                { name: '医药生物', change: 0.8, count: 2, level: 'cool' }
-            ]
+            northFlow: 65
         };
 
         // 初始化
         document.addEventListener('DOMContentLoaded', function() {
+            checkPremiumAccess();
             updateTime();
             setInterval(updateTime, 1000);
-            setInterval(simulateDataUpdate, 5000);
+            setInterval(simulateDataUpdate, userSettings.settings.refreshInterval);
             updateDashboard();
-            initEmotionMeter();
+            applyUserSettings();
         });
+
+        // 检查付费状态
+        function checkPremiumAccess() {
+            if (!paymentSystem.isPaid) {
+                showNotification('请解锁专业版以使用完整功能', 'warning');
+                setTimeout(() => {
+                    paymentSystem.requestPayment();
+                }, 2000);
+            }
+        }
+
+        // 应用用户设置
+        function applyUserSettings() {
+            // 更新用户信息显示
+            document.getElementById('user-name').textContent = userSettings.settings.username;
+            document.getElementById('user-avatar').textContent = userSettings.settings.avatar;
+            document.getElementById('settings-username').value = userSettings.settings.username;
+            
+            // 更新其他设置
+            document.getElementById('risk-tolerance').value = userSettings.settings.riskTolerance;
+            document.getElementById('max-position').value = userSettings.settings.maxPosition;
+            document.getElementById('stop-loss').value = userSettings.settings.stopLoss;
+            document.getElementById('refresh-interval').value = userSettings.settings.refreshInterval;
+        }
+
+        // 处理付费
+        function processPayment() {
+            const code = document.getElementById('payment-code').value;
+            
+            if (paymentSystem.processPayment(code)) {
+                showNotification('支付成功！已解锁专业版功能', 'success');
+                closePaymentModal();
+                
+                // 更新界面显示
+                document.querySelectorAll('.premium-badge').forEach(badge => {
+                    badge.style.display = 'inline-block';
+                });
+                
+                // 重新加载页面以解锁功能
+                setTimeout(() => {
+                    location.reload();
+                }, 1500);
+                
+                if (window.paymentResolve) {
+                    window.paymentResolve(true);
+                }
+            } else {
+                showNotification('验证码错误，请重试', 'error');
+            }
+        }
+
+        // 关闭付费模态框
+        function closePaymentModal() {
+            document.getElementById('payment-modal').classList.remove('active');
+        }
+
+        // 打开设置面板
+        function openSettings() {
+            if (!paymentSystem.isPaid) {
+                showNotification('请先解锁专业版', 'warning');
+                return;
+            }
+            document.getElementById('settings-panel').classList.add('active');
+        }
+
+        // 关闭设置面板
+        function closeSettings() {
+            document.getElementById('settings-panel').classList.remove('active');
+        }
+
+        // 保存设置
+        function saveSettings() {
+            const newSettings = {
+                username: document.getElementById('settings-username').value,
+                riskTolerance: document.getElementById('risk-tolerance').value,
+                maxPosition: parseInt(document.getElementById('max-position').value),
+                stopLoss: parseInt(document.getElementById('stop-loss').value),
+                refreshInterval: parseInt(document.getElementById('refresh-interval').value)
+            };
+            
+            userSettings.updateSettings(newSettings);
+            applyUserSettings();
+            
+            showNotification('设置已保存', 'success');
+            closeSettings();
+        }
+
+        // 更换头像
+        function changeAvatar() {
+            const avatars = ['游', '资', '新', '秀', '高', '手', '大', '神'];
+            const currentAvatar = userSettings.settings.avatar;
+            const currentIndex = avatars.indexOf(currentAvatar);
+            const newAvatar = avatars[(currentIndex + 1) % avatars.length];
+            
+            userSettings.updateSettings({ avatar: newAvatar });
+            applyUserSettings();
+            
+            showNotification('头像已更换', 'success');
+        }
+
+        // 切换用户信息
+        function toggleUserInfo() {
+            showNotification('用户信息面板开发中...', 'info');
+        }
 
         // 更新时间
         function updateTime() {
             const now = new Date();
             document.getElementById('current-time').textContent = 
                 now.toLocaleTimeString('zh-CN', { hour12: false });
-        }
-
-        // 初始化情绪温度计
-        function initEmotionMeter() {
-            updateEmotionIndicator();
-        }
-
-        // 更新情绪指示器
-        function updateEmotionIndicator() {
-            const indicator = document.getElementById('emotion-main-indicator');
-            const label = indicator.querySelector('.emotion-label');
-            const score = currentData.emotionScore;
-            
-            let stage, stageText, stageColor;
-            if (score < 30) {
-                stage = '冰点'; stageText = '冰点期'; stageColor = '#3b82f6';
-            } else if (score < 50) {
-                stage = '低迷'; stageText = '修复期'; stageColor = '#10b981';
-            } else if (score < 70) {
-                stage = '温和'; stageText = '升温期'; stageColor = '#f59e0b';
-            } else if (score < 85) {
-                stage = '活跃'; stageText = '高潮期'; stageColor = '#ef4444';
-            } else {
-                stage = '亢奋'; stageText = '分歧期'; stageColor = '#6b7280';
-            }
-            
-            indicator.style.left = score + '%';
-            label.textContent = stageText;
-            label.style.left = score + '%';
-            label.style.color = stageColor;
-            
-            document.getElementById('emotion-total').textContent = score;
         }
 
         // 更新仪表盘
@@ -849,8 +988,33 @@
             document.getElementById('north-flow').textContent = 
                 (currentData.northFlow > 0 ? '+' : '') + currentData.northFlow + '亿';
             
-            document.getElementById('emotion-pointer').style.left = currentData.emotionScore + '%';
-            updateEmotionIndicator();
+            // 更新情绪指示器
+            const indicators = document.querySelectorAll('.emotion-indicator');
+            indicators.forEach(indicator => {
+                const label = indicator.querySelector('.emotion-label');
+                indicator.style.left = currentData.emotionScore + '%';
+                if (label) {
+                    label.style.left = currentData.emotionScore + '%';
+                    
+                    let stageText, stageColor;
+                    if (currentData.emotionScore < 30) {
+                        stageText = '冰点期'; stageColor = '#3b82f6';
+                    } else if (currentData.emotionScore < 50) {
+                        stageText = '修复期'; stageColor = '#10b981';
+                    } else if (currentData.emotionScore < 70) {
+                        stageText = '升温期'; stageColor = '#f59e0b';
+                    } else if (currentData.emotionScore < 85) {
+                        stageText = '高潮期'; stageColor = '#ef4444';
+                    } else {
+                        stageText = '分歧期'; stageColor = '#6b7280';
+                    }
+                    
+                    label.textContent = stageText;
+                    label.style.color = stageColor;
+                }
+            });
+            
+            document.getElementById('emotion-total').textContent = currentData.emotionScore;
         }
 
         // 模拟数据更新
@@ -875,277 +1039,41 @@
 
         // 显示买点详情
         function showBuyPointDetail(type) {
-            const buyPointData = {
-                'first': {
-                    title: '第一买点：发现期',
-                    description: '题材或个股刚刚被发现，市场关注度较低，价格处于相对低位。',
-                    features: [
-                        '价格位置：相对低位，远离前期高点',
-                        '技术形态：底部整理，有突破迹象',
-                        '成交量：温和放大，资金开始关注',
-                        '消息催化：有政策或事件驱动',
-                        '题材属性：符合当前热点方向'
-                    ],
-                    strategy: '仓位控制5-10%，发现当日或次日买入，-8%严格止损，持股3-5天确认走势',
-                    risk: '高风险高收益，适合短线高手，新手谨慎参与'
-                },
-                'second': {
-                    title: '第二买点：确认期',
-                    description: '题材得到市场初步确认，龙头地位开始显现，技术走势开始转强。',
-                    features: [
-                        '涨停确认：出现首个涨停板',
-                        '连板启动：开始连板走势',
-                        '板块效应：同板块个股开始跟随',
-                        '资金认可：各路资金积极参与',
-                        '技术突破：突破重要压力位'
-                    ],
-                    strategy: '仓位提升20-30%，换手板或突破板买入，-5%动态止损，持股7-15天主升浪',
-                    risk: '中等风险收益，成功率较高，适合有一定经验的投资者'
-                },
-                'third': {
-                    title: '第三买点：加速期',
-                    description: '题材进入加速期，龙头股连续涨停，市场情绪达到高涨状态。',
-                    features: [
-                        '涨停速度明显加快',
-                        '成交量持续放大',
-                        '板块效应显著增强',
-                        '媒体开始密集报道'
-                    ],
-                    strategy: '仓位控制30-40%，换手充分后的封板买入，最高点回撤10%止损，+30%开始分批止盈',
-                    risk: '适度风险收益，需要严格的风控纪律'
-                },
-                'fourth': {
-                    title: '第四买点：高潮期',
-                    description: '题材达到高潮，龙头股连续大涨，市场情绪达到极度亢奋状态。',
-                    features: [
-                        '涨停数量100+只',
-                        '连板高度突破8板',
-                        '指数加速上涨',
-                        '成交量创历史新高',
-                        '全民炒股，情绪亢奋'
-                    ],
-                    strategy: '极高风险区域，适合短线高手快进快出，普通投资者建议观望',
-                    risk: '极高风险，属于右侧交易的高风险区域'
-                },
-                'theoretical': {
-                    title: '理论买点：理想化',
-                    description: '理论买点是事后的完美买点，在实际操作中很难精准把握，但它是我们努力的目标。',
-                    features: [
-                        '时间节点：行情启动前夜',
-                        '价格位置：历史最低点附近',
-                        '资金流向：主力资金刚刚开始建仓',
-                        '技术形态：完美底部形态',
-                        '市场情绪：极度悲观，无人问津'
-                    ],
-                    strategy: '告诉我们不要追求完美的买点，在相对低位分批建仓，接受不完美的现实，重视概率和赔率',
-                    risk: '理论指导意义，实际中需要灵活应用'
-                }
-            };
+            if (!paymentSystem.isPaid) {
+                showNotification('请先解锁专业版查看详细内容', 'warning');
+                return;
+            }
             
-            const data = buyPointData[type] || {};
-            
-            const modalBody = `
-                <h2 class="text-2xl font-bold mb-4">${data.title}</h2>
-                <div class="mb-6">
-                    <p class="text-gray-700 mb-4">${data.description}</p>
-                    
-                    <h3 class="text-lg font-bold mb-3">特征识别</h3>
-                    <ul class="space-y-2 mb-6">
-                        ${data.features ? data.features.map(feature => 
-                            `<li class="flex items-start">
-                                <i class="ri-checkbox-circle-line text-green-500 mr-2 mt-1"></i>
-                                <span>${feature}</span>
-                            </li>`
-                        ).join('') : '<li class="text-gray-500">特征分析中...</li>'}
-                    </ul>
-                    
-                    <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
-                        <h3 class="font-bold text-amber-700 mb-2">操作策略</h3>
-                        <p class="text-gray-700">${data.strategy}</p>
-                    </div>
-                    
-                    <div class="bg-red-50 border border-red-200 rounded-lg p-4">
-                        <h3 class="font-bold text-red-700 mb-2">⚠️ 风险提示</h3>
-                        <p class="text-gray-700">${data.risk}</p>
-                    </div>
-                </div>
-                <button onclick="closeModal()" class="tool-button bg-blue-500 text-white w-full">
-                    了解了
-                </button>
-            `;
-            
-            showModal(modalBody);
+            // 显示买点详情逻辑
+            showNotification('正在加载买点详情...', 'info');
         }
 
-        // 显示情绪建议
-        function showEmotionAdvice(strategy) {
-            const adviceData = {
-                'participate': {
-                    title: '积极参与策略',
-                    description: '当前情绪偏热，适合积极参与市场',
-                    tactics: [
-                        '提高仓位至70-80%',
-                        '聚焦龙头股，重点持有核心标的',
-                        '波段操作，高抛低吸获取超额收益',
-                        '设置止盈：+30%开始减仓',
-                        '动态止损：最高点回撤8%止损'
-                    ],
-                    warning: '注意控制风险，避免过度追高'
-                },
-                'cautious': {
-                    title: '谨慎参与策略',
-                    description: '情绪开始偏热，需要谨慎参与',
-                    tactics: [
-                        '控制仓位在50-60%',
-                        '精选个股，重点持有龙头股',
-                        '设置严格止损：-5%',
-                        '分批建仓，不一次性满仓',
-                        '及时止盈，不贪恋最后收益'
-                    ],
-                    warning: '警惕市场情绪转折，随时准备减仓'
-                },
-                'observe': {
-                    title: '观望等待策略',
-                    description: '市场情绪过热，建议观望等待',
-                    tactics: [
-                        '空仓或轻仓（不超过20%）',
-                        '重点关注情绪变化',
-                        '等待情绪降温后的机会',
-                        '研究新的投资标的',
-                        '保持资金充裕，准备抄底'
-                    ],
-                    warning: '耐心是最好的策略，不要被FOMO情绪影响'
-                }
-            };
+        // 显示寻龙工具
+        function showDragonHunting() {
+            if (!paymentSystem.isPaid) {
+                showNotification('请先解锁专业版使用寻龙工具', 'warning');
+                return;
+            }
             
-            const data = adviceData[strategy] || {};
-            
-            const modalBody = `
-                <h2 class="text-2xl font-bold mb-4">${data.title}</h2>
-                <div class="mb-6">
-                    <p class="text-gray-700 mb-4">${data.description}</p>
-                    
-                    <h3 class="text-lg font-bold mb-3">具体策略</h3>
-                    <ul class="space-y-2 mb-6">
-                        ${data.tactics ? data.tactics.map(tactic => 
-                            `<li class="flex items-start">
-                                <i class="ri-arrow-right-line text-blue-500 mr-2 mt-1"></i>
-                                <span>${tactic}</span>
-                            </li>`
-                        ).join('') : '<li class="text-gray-500">策略制定中...</li>'}
-                    </ul>
-                    
-                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                        <h3 class="font-bold text-blue-700 mb-2">💡 重要提醒</h3>
-                        <p class="text-gray-700">${data.warning}</p>
-                    </div>
-                </div>
-                <button onclick="closeModal()" class="tool-button bg-blue-500 text-white w-full">
-                    明白了
-                </button>
-            `;
-            
-            showModal(modalBody);
+            // 显示寻龙工具逻辑
+            showNotification('正在启动寻龙工具...', 'info');
         }
 
         // 显示SOP
         function showSOP(type) {
-            const sopData = {
-                'premarket': {
-                    title: '盘前准备SOP',
-                    content: `
-                        <h3 class="text-lg font-bold mb-4">9:15前必须完成的十件事</h3>
-                        <div class="space-y-4">
-                            <div class="border-l-4 border-green-500 pl-4">
-                                <h4 class="font-bold">1. 外围市场检查</h4>
-                                <ul class="text-sm text-gray-600">
-                                    <li>美股收盘情况</li>
-                                    <li>欧洲市场表现</li>
-                                    <li>期货市场走势</li>
-                                </ul>
-                            </div>
-                            <div class="border-l-4 border-blue-500 pl-4">
-                                <h4 class="font-bold">2. 重要消息解读</h4>
-                                <ul class="text-sm text-gray-600">
-                                    <li>政策面消息</li>
-                                    <li>行业动态</li>
-                                    <li>公司公告</li>
-                                </ul>
-                            </div>
-                            <div class="border-l-4 border-amber-500 pl-4">
-                                <h4 class="font-bold">3. 自选股管理</h4>
-                                <ul class="text-sm text-gray-600">
-                                    <li>核心股票池更新</li>
-                                    <li>重点目标筛选</li>
-                                    <li>预案制定</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <button onclick="printSOP('premarket')" class="tool-button bg-green-500 text-white mt-4">
-                            <i class="ri-printer-line mr-2"></i>打印清单
-                        </button>
-                    `
-                },
-                'intraday': {
-                    title: '盘中执行手册',
-                    content: `
-                        <h3 class="text-lg font-bold mb-4">盘中关键时点操作要点</h3>
-                        <div class="space-y-4">
-                            <div class="bg-red-50 p-4 rounded">
-                                <h4 class="font-bold text-red-600">9:30-10:00 开盘阶段</h4>
-                                <ul class="text-sm text-gray-600">
-                                    <li>观察开盘强度</li>
-                                    <li>执行竞价预案</li>
-                                    <li>关注异动个股</li>
-                                </ul>
-                            </div>
-                            <div class="bg-amber-50 p-4 rounded">
-                                <h4 class="font-bold text-amber-600">10:00-11:00 主交易时段</h4>
-                                <ul class="text-sm text-gray-600">
-                                    <li>跟踪题材变化</li>
-                                    <li>调整仓位策略</li>
-                                    <li>严格执行纪律</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <button onclick="printSOP('intraday')" class="tool-button bg-amber-500 text-white mt-4">
-                            <i class="ri-printer-line mr-2"></i>打印手册
-                        </button>
-                    `
-                },
-                'review': {
-                    title: '复盘模板',
-                    content: `
-                        <h3 class="text-lg font-bold mb-4">每日复盘要点</h3>
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block font-bold mb-2">今日市场概况</label>
-                                <textarea class="w-full p-2 border rounded" rows="3" placeholder="指数表现、成交额、涨跌比..."></textarea>
-                            </div>
-                            <div>
-                                <label class="block font-bold mb-2">热门题材分析</label>
-                                <textarea class="w-full p-2 border rounded" rows="3" placeholder="涨停数量、龙头个股、逻辑分析..."></textarea>
-                            </div>
-                            <div>
-                                <label class="block font-bold mb-2">操作总结</label>
-                                <textarea class="w-full p-2 border rounded" rows="3" placeholder="成功案例、失败教训、心得体会..."></textarea>
-                            </div>
-                        </div>
-                        <button onclick="saveReview()" class="tool-button bg-blue-500 text-white mt-4">
-                            <i class="ri-save-line mr-2"></i>保存复盘
-                        </button>
-                    `
-                }
-            };
+            if (!paymentSystem.isPaid) {
+                showNotification('请先解锁专业版使用实战工具', 'warning');
+                return;
+            }
             
-            const data = sopData[type] || {};
-            
-            const modalBody = `
-                <h2 class="text-2xl font-bold mb-4">${data.title}</h2>
-                ${data.content}
-            `;
-            
-            showModal(modalBody);
+            // 显示SOP逻辑
+            showNotification('正在加载SOP工具...', 'info');
+        }
+
+        // 刷新数据
+        function refreshData() {
+            simulateDataUpdate();
+            showNotification('数据已更新', 'success');
         }
 
         // 显示模态框
@@ -1157,32 +1085,6 @@
         // 关闭模态框
         function closeModal() {
             document.getElementById('modal').classList.remove('active');
-        }
-
-        // 工具函数
-        function refreshData() {
-            simulateDataUpdate();
-            showNotification('数据已更新', 'success');
-        }
-
-        function printSOP(type) {
-            showNotification('正在生成打印版本...', 'info');
-            setTimeout(() => {
-                showNotification('打印准备完成！', 'success');
-            }, 1000);
-        }
-
-        function saveReview() {
-            showNotification('复盘已保存到本地', 'success');
-        }
-
-        function toggleMenu() {
-            showNotification('功能开发中...', 'info');
-        }
-
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            showNotification('主题切换功能开发中...', 'info');
         }
 
         // 显示通知
@@ -1209,6 +1111,8 @@
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeModal();
+                closePaymentModal();
+                closeSettings();
             }
         });
 
@@ -1216,6 +1120,12 @@
         document.getElementById('modal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeModal();
+            }
+        });
+
+        document.getElementById('payment-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePaymentModal();
             }
         });
     </script>
