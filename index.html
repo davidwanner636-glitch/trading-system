@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>股市修行录 - 智能交易系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <style>
+        :root {
+            --primary-color: #f59e0b;
+            --secondary-color: #ef4444;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --info-color: #3b82f6;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.45);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .stat-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-4px);
+        }
+
+        .emotion-bar {
+            height: 8px;
+            background: linear-gradient(90deg, #ef4444, #f59e0b, #10b981);
+            border-radius: 4px;
+            position: relative;
+            margin: 1rem 0;
+        }
+
+        .emotion-pointer {
+            position: absolute;
+            top: -4px;
+            width: 16px;
+            height: 16px;
+            background: white;
+            border: 3px solid var(--primary-color);
+            border-radius: 50%;
+            transition: left 0.5s ease;
+        }
+
+        .theme-tag {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            margin: 0.25rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .theme-tag:hover {
+            transform: scale(1.05);
+        }
+
+        .theme-hot { background: #fef2f2; color: #ef4444; border: 1px solid #ef4444; }
+        .theme-warm { background: #fffbeb; color: #f59e0b; border: 1px solid #f59e0b; }
+        .theme-cool { background: #eff6ff; color: #3b82f6; border: 1px solid #3b82f6; }
+        .theme-cold { background: #f9fafb; color: #6b7280; border: 1px solid #6b7280; }
+
+        .volume-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        .volume-high { background: #ef4444; }
+        .volume-medium { background: #f59e0b; }
+        .volume-low { background: #10b981; }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.2); }
+        }
+
+        .method-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .method-card:hover {
+            border-color: var(--primary-color);
+            transform: translateX(4px);
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.15);
+        }
+
+        .method-card.active {
+            border-color: var(--primary-color);
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.05), rgba(239, 68, 68, 0.05));
+        }
+
+        .tab-button {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .tab-button.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .tab-button:not(.active):hover {
+            border-color: var(--primary-color);
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .tool-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .tool-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .floating-menu {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+        }
+
+        .menu-button {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .menu-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6b7280;
+        }
+
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.5s ease;
+        }
+
+        .stock-ticker {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 0.5rem 0;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .ticker-content {
+            display: inline-block;
+            animation: scroll-left 30s linear infinite;
+        }
+
+        @keyframes scroll-left {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+    </style>
+</head>
+<body>
+    <!-- 股票滚动条 -->
+    <div class="stock-ticker">
+        <div class="ticker-content" id="stock-ticker">
+            📈 上证指数 +1.2% | 📊 深证成指 +0.8% | 🚀 创业板指 +1.5% | 🔥 半导体板块 +3.2% | 💻 人工智能 +2.8% | 🚗 新能源车 +1.9% | 📱 消费电子 +1.2%
+        </div>
+    </div>
+
+    <!-- 导航栏 -->
+    <nav class="glass-card sticky top-4 z-50 mx-4 mt-4">
+        <div class="max-w-7xl mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <i class="ri-candle-chart-line text-2xl text-amber-500"></i>
+                    <h1 class="text-xl font-bold text-gray-800">股市修行录</h1>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#dashboard" class="text-gray-700 hover:text-amber-500 transition">仪表盘</a>
+                    <a href="#market" class="text-gray-700 hover:text-amber-500 transition">市场分析</a>
+                    <a href="#methods" class="text-gray-700 hover:text-amber-500 transition">交易战法</a>
+                    <a href="#tools" class="text-gray-700 hover:text-amber-500 transition">实战工具</a>
+                    <a href="#learning" class="text-gray-700 hover:text-amber-500 transition">学习路径</a>
+                </div>
+                <div class="flex space-x-2">
+                    <button onclick="refreshData()" class="p-2 text-gray-600 hover:text-amber-500 transition">
+                        <i class="ri-refresh-line text-xl"></i>
+                    </button>
+                    <button onclick="toggleDarkMode()" class="p-2 text-gray-600 hover:text-amber-500 transition">
+                        <i class="ri-moon-line text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-6 max-w-7xl">
+        <!-- 主仪表盘 -->
+        <section id="dashboard" class="mb-8">
+            <!-- 英雄区域 -->
+            <div class="hero-section">
+                <h1 class="text-3xl md:text-4xl font-bold mb-4">智能交易系统</h1>
+                <p class="text-lg mb-6">基于《股市修行录》的专业A股分析平台</p>
+                <div class="flex justify-center space-x-4 mb-6">
+                    <div class="bg-white/20 backdrop-blur px-4 py-2 rounded-lg">
+                        <span class="text-sm">交易状态</span>
+                        <div class="font-bold">盘中交易</div>
+                    </div>
+                    <div class="bg-white/20 backdrop-blur px-4 py-2 rounded-lg">
+                        <span class="text-sm">更新时间</span>
+                        <div class="font-bold" id="current-time">--:--:--</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 核心指标 -->
+            <div class="grid md:grid-cols-5 gap-4 mb-6">
+                <div class="stat-card">
+                    <div class="text-sm text-gray-600 mb-1">市场情绪</div>
+                    <div class="text-2xl font-bold text-red-500" id="emotion-score">72</div>
+                    <div class="text-sm text-red-500">偏热</div>
+                    <div class="emotion-bar">
+                        <div class="emotion-pointer" id="emotion-pointer" style="left: 72%"></div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="text-sm text-gray-600 mb-1">涨停数量</div>
+                    <div class="text-2xl font-bold text-green-500" id="limit-up-count">42</div>
+                    <div class="text-sm text-green-500">较昨日+8</div>
+                </div>
+                <div class="stat-card">
+                    <div class="text-sm text-gray-600 mb-1">跌停数量</div>
+                    <div class="text-2xl font-bold text-red-500" id="limit-down-count">3</div>
+                    <div class="text-sm text-gray-500">较昨日-2</div>
+                </div>
+                <div class="stat-card">
+                    <div class="text-sm text-gray-600 mb-1">成交额</div>
+                    <div class="text-2xl font-bold text-blue-500" id="volume">8,523亿</div>
+                    <div class="text-sm text-blue-500">较昨日+12%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="text-sm text-gray-600 mb-1">北向资金</div>
+                    <div class="text-2xl font-bold text-green-500" id="north-flow">+65亿</div>
+                    <div class="text-sm text-green-500">净流入</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 市场分析 -->
+        <section id="market" class="mb-8">
+            <h2 class="text-2xl font-bold text-white mb-4">市场分析</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- 热门题材 -->
+                <div class="glass-card p-6">
+                    <h3 class="text-xl font-bold mb-4 flex items-center">
+                        <i class="ri-fire-line text-red-500 mr-2"></i>
+                        热门题材
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="theme-tag theme-hot" onclick="showThemeDetail('半导体')">
+                            <span class="volume-indicator volume-high"></span>
+                            半导体 (+3.2%)
+                            <span class="ml-2 text-sm bg-red-100 text-red-600 px-2 py-1 rounded">12涨停</span>
+                        </div>
+                        <div class="theme-tag theme-hot" onclick="showThemeDetail('人工智能')">
+                            <span class="volume-indicator volume-high"></span>
+                            人工智能 (+2.8%)
+                            <span class="ml-2 text-sm bg-red-100 text-red-600 px-2 py-1 rounded">8涨停</span>
+                        </div>
+                        <div class="theme-tag theme-warm" onclick="showThemeDetail('新能源车')">
+                            <span class="volume-indicator volume-medium"></span>
+                            新能源车 (+1.9%)
+                            <span class="ml-2 text-sm bg-amber-100 text-amber-600 px-2 py-1 rounded">6涨停</span>
+                        </div>
+                        <div class="theme-tag theme-warm" onclick="showThemeDetail('消费电子')">
+                            <span class="volume-indicator volume-medium"></span>
+                            消费电子 (+1.2%)
+                            <span class="ml-2 text-sm bg-amber-100 text-amber-600 px-2 py-1 rounded">4涨停</span>
+                        </div>
+                        <div class="theme-tag theme-cool" onclick="showThemeDetail('医药生物')">
+                            <span class="volume-indicator volume-low"></span>
+                            医药生物 (+0.8%)
+                            <span class="ml-2 text-sm bg-blue-100 text-blue-600 px-2 py-1 rounded">2涨停</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 情绪分析 -->
+                <div class="glass-card p-6">
+                    <h3 class="text-xl font-bold mb-4 flex items-center">
+                        <i class="ri-bar-chart-line text-blue-500 mr-2"></i>
+                        情绪分析
+                    </h3>
+                    <canvas id="emotionChart" width="400" height="200"></canvas>
+                    <div class="grid grid-cols-3 gap-2 mt-4">
+                        <div class="text-center p-2 bg-green-50 rounded">
+                            <div class="text-sm text-gray-600">乐观</div>
+                            <div class="font-bold text-green-600">32%</div>
+                        </div>
+                        <div class="text-center p-2 bg-amber-50 rounded">
+                            <div class="text-sm text-gray-600">中性</div>
+                            <div class="font-bold text-amber-600">45%</div>
+                        </div>
+                        <div class="text-center p-2 bg-red-50 rounded">
+                            <div class="text-sm text-gray-600">悲观</div>
+                            <div class="font-bold text-red-600">23%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 交易战法 -->
+        <section id="methods" class="mb-8">
+            <h2 class="text-2xl font-bold text-white mb-4">交易战法</h2>
+            <div class="glass-card p-6">
+                <!-- 战法分类 -->
+                <div class="flex space-x-2 mb-6">
+                    <button class="tab-button active" onclick="switchMethodTab('basic')">基础战法</button>
+                    <button class="tab-button" onclick="switchMethodTab('intermediate')">进阶战法</button>
+                    <button class="tab-button" onclick="switchMethodTab('advanced')">高阶战法</button>
+                </div>
+
+                <!-- 基础战法 -->
+                <div id="basic-methods" class="method-content">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="method-card active" onclick="showMethodDetail('爆量战法')">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-lg font-bold">🔥 爆量战法</h3>
+                                <span class="bg-green-100 text-green-600 text-xs px-2 py-1 rounded">基础</span>
+                            </div>
+                            <p class="text-gray-600 mb-3">识别筹码交换的关键信号，把握主力资金动向</p>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <i class="ri-trophy-line mr-1 text-amber-500"></i>
+                                <span>成功率: 65%</span>
+                                <span class="mx-2">•</span>
+                                <i class="ri-bar-chart-line mr-1 text-blue-500"></i>
+                                <span>震荡市适用</span>
+                            </div>
+                        </div>
+                        <div class="method-card" onclick="showMethodDetail('三一模式')">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-lg font-bold">⚡ 三一模式</h3>
+                                <span class="bg-green-100 text-green-600 text-xs px-2 py-1 rounded">基础</span>
+                            </div>
+                            <p class="text-gray-600 mb-3">竞价阶段的快速识别法，抢占先机</p>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <i class="ri-trophy-line mr-1 text-amber-500"></i>
+                                <span>成功率: 70%</span>
+                                <span class="mx-2">•</span>
+                                <i class="ri-bar-chart-line mr-1 text-green-500"></i>
+                                <span>强势市适用</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 进阶战法 -->
+                <div id="intermediate-methods" class="method-content" style="display: none;">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="method-card" onclick="showMethodDetail('龙头战法')">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-lg font-bold">🐉 龙头战法</h3>
+                                <span class="bg-amber-100 text-amber-600 text-xs px-2 py-1 rounded">进阶</span>
+                            </div>
+                            <p class="text-gray-600 mb-3">识别和操作真龙头的完整体系，获取超额收益</p>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <i class="ri-trophy-line mr-1 text-amber-500"></i>
+                                <span>成功率: 75%</span>
+                                <span class="mx-2">•</span>
+                                <i class="ri-bar-chart-line mr-1 text-green-500"></i>
+                                <span>趋势市适用</span>
+                            </div>
+                        </div>
+                        <div class="method-card" onclick="showMethodDetail('炸板低吸')">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-lg font-bold">💥 炸板低吸</h3>
+                                <span class="bg-amber-100 text-amber-600 text-xs px-2 py-1 rounded">进阶</span>
+                            </div>
+                            <p class="text-gray-600 mb-3">分歧转一致的经典模式，把握反弹机会</p>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <i class="ri-trophy-line mr-1 text-amber-500"></i>
+                                <span>成功率: 68%</span>
+                                <span class="mx-2">•</span>
+                                <i class="ri-bar-chart-line mr-1 text-blue-500"></i>
+                                <span>震荡市适用</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 高阶战法 -->
+                <div id="advanced-methods" class="method-content" style="display: none;">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="method-card" onclick="showMethodDetail('断板反包')">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-lg font-bold">🔄 断板反包</h3>
+                                <span class="bg-red-100 text-red-600 text-xs px-2 py-1 rounded">高阶</span>
+                            </div>
+                            <p class="text-gray-600 mb-3">判断反包概率的五个维度，精准把握转折点</p>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <i class="ri-trophy-line mr-1 text-amber-500"></i>
+                                <span>成功率: 72%</span>
+                                <span class="mx-2">•</span>
+                                <i class="ri-bar-chart-line mr-1 text-green-500"></i>
+                                <span>反弹市适用</span>
+                            </div>
+                        </div>
+                        <div class="method-card" onclick="showMethodDetail('地天板战法')">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-lg font-bold">🌊 地天板战法</h3>
+                                <span class="bg-red-100 text-red-600 text-xs px-2 py-1 rounded">高阶</span>
+                            </div>
+                            <p class="text-gray-600 mb-3">极致情绪的博弈艺术，高风险高收益</p>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <i class="ri-trophy-line mr-1 text-amber-500"></i>
+                                <span>成功率: 60%</span>
+                                <span class="mx-2">•</span>
+                                <i class="ri-bar-chart-line mr-1 text-red-500"></i>
+                                <span>极端市适用</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 实战工具 -->
+        <section id="tools" class="mb-8">
+            <h2 class="text-2xl font-bold text-white mb-4">实战工具</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="glass-card p-6 text-center">
+                    <i class="ri-calendar-check-line text-4xl text-green-500 mb-4"></i>
+                    <h3 class="text-lg font-bold mb-2">盘前准备SOP</h3>
+                    <p class="text-gray-600 mb-4">9:15前必须完成的十件事</p>
+                    <button onclick="showSOP('premarket')" class="tool-button bg-green-500 text-white w-full">
+                        立即使用
+                    </button>
+                </div>
+                <div class="glass-card p-6 text-center">
+                    <i class="ri-stock-line text-4xl text-amber-500 mb-4"></i>
+                    <h3 class="text-lg font-bold mb-2">盘中执行手册</h3>
+                    <p class="text-gray-600 mb-4">快速反应的决策框架</p>
+                    <button onclick="showSOP('intraday')" class="tool-button bg-amber-500 text-white w-full">
+                        立即使用
+                    </button>
+                </div>
+                <div class="glass-card p-6 text-center">
+                    <i class="ri-file-search-line text-4xl text-blue-500 mb-4"></i>
+                    <h3 class="text-lg font-bold mb-2">复盘模板</h3>
+                    <p class="text-gray-600 mb-4">找出当日最佳理论买点</p>
+                    <button onclick="showSOP('review')" class="tool-button bg-blue-500 text-white w-full">
+                        立即使用
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 学习路径 -->
+        <section id="learning" class="mb-8">
+            <h2 class="text-2xl font-bold text-white mb-4">学习路径</h2>
+            <div class="glass-card p-6">
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="ri-seedling-line text-3xl text-white"></i>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">新手入门</h3>
+                        <div class="mb-4">
+                            <svg class="progress-ring w-20 h-20 mx-auto" viewBox="0 0 36 36">
+                                <circle class="progress-ring-circle" stroke="#e5e7eb" stroke-width="3" fill="transparent" r="16" cx="18" cy="18"/>
+                                <circle class="progress-ring-circle" stroke="#10b981" stroke-width="3" fill="transparent" r="16" cx="18" cy="18" stroke-dasharray="75 100" stroke-dashoffset="25"/>
+                            </svg>
+                        </div>
+                        <button onclick="startLearning('beginner')" class="tool-button bg-green-500 text-white">
+                            开始学习
+                        </button>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-amber-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="ri-rocket-line text-3xl text-white"></i>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">进阶提升</h3>
+                        <div class="mb-4">
+                            <svg class="progress-ring w-20 h-20 mx-auto" viewBox="0 0 36 36">
+                                <circle class="progress-ring-circle" stroke="#e5e7eb" stroke-width="3" fill="transparent" r="16" cx="18" cy="18"/>
+                                <circle class="progress-ring-circle" stroke="#f59e0b" stroke-width="3" fill="transparent" r="16" cx="18" cy="18" stroke-dasharray="50 100" stroke-dashoffset="50"/>
+                            </svg>
+                        </div>
+                        <button onclick="startLearning('intermediate')" class="tool-button bg-amber-500 text-white">
+                            开始学习
+                        </button>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="ri-vip-crown-line text-3xl text-white"></i>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">职业选手</h3>
+                        <div class="mb-4">
+                            <svg class="progress-ring w-20 h-20 mx-auto" viewBox="0 0 36 36">
+                                <circle class="progress-ring-circle" stroke="#e5e7eb" stroke-width="3" fill="transparent" r="16" cx="18" cy="18"/>
+                                <circle class="progress-ring-circle" stroke="#8b5cf6" stroke-width="3" fill="transparent" r="16" cx="18" cy="18" stroke-dasharray="25 100" stroke-dashoffset="75"/>
+                            </svg>
+                        </div>
+                        <button onclick="startLearning('advanced')" class="tool-button bg-purple-500 text-white">
+                            开始学习
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 悬浮菜单 -->
+    <div class="floating-menu">
+        <button class="menu-button" onclick="toggleMenu()">
+            <i class="ri-menu-line text-2xl"></i>
+        </button>
+    </div>
+
+    <!-- 模态框 -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" onclick="closeModal()">
+                <i class="ri-close-line"></i>
+            </button>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let currentData = {
+            emotionScore: 72,
+            limitUp: 42,
+            limitDown: 3,
+            volume: 8523,
+            northFlow: 65,
+            themes: [
+                { name: '半导体', change: 3.2, count: 12, level: 'hot' },
+                { name: '人工智能', change: 2.8, count: 8, level: 'hot' },
+                { name: '新能源车', change: 1.9, count: 6, level: 'warm' },
+                { name: '消费电子', change: 1.2, count: 4, level: 'warm' },
+                { name: '医药生物', change: 0.8, count: 2, level: 'cool' }
+            ]
+        };
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTime();
+            setInterval(updateTime, 1000);
+            setInterval(simulateDataUpdate, 5000);
+            initEmotionChart();
+            updateDashboard();
+        });
+
+        // 更新时间
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('current-time').textContent = 
+                now.toLocaleTimeString('zh-CN', { hour12: false });
+        }
+
+        // 初始化情绪图表
+        function initEmotionChart() {
+            const ctx = document.getElementById('emotionChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['9:30', '10:30', '11:30', '14:00', '15:00'],
+                    datasets: [{
+                        label: '市场情绪',
+                        data: [65, 68, 72, 70, 72],
+                        borderColor: '#f59e0b',
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        }
+
+        // 更新仪表盘
+        function updateDashboard() {
+            document.getElementById('emotion-score').textContent = currentData.emotionScore;
+            document.getElementById('limit-up-count').textContent = currentData.limitUp;
+            document.getElementById('limit-down-count').textContent = currentData.limitDown;
+            document.getElementById('volume').textContent = 
+                (currentData.volume / 10000).toFixed(1) + '万亿';
+            document.getElementById('north-flow').textContent = 
+                (currentData.northFlow > 0 ? '+' : '') + currentData.northFlow + '亿';
+            
+            // 更新情绪指针
+            document.getElementById('emotion-pointer').style.left = currentData.emotionScore + '%';
+        }
+
+        // 模拟数据更新
+        function simulateDataUpdate() {
+            // 随机波动
+            currentData.emotionScore += Math.random() * 6 - 3;
+            currentData.emotionScore = Math.max(0, Math.min(100, currentData.emotionScore));
+            
+            currentData.limitUp += Math.floor(Math.random() * 5) - 2;
+            currentData.limitUp = Math.max(0, currentData.limitUp);
+            
+            currentData.limitDown += Math.floor(Math.random() * 3) - 1;
+            currentData.limitDown = Math.max(0, currentData.limitDown);
+            
+            currentData.volume += Math.floor(Math.random() * 200) - 100;
+            currentData.volume = Math.max(5000, currentData.volume);
+            
+            currentData.northFlow += Math.floor(Math.random() * 20) - 10;
+            currentData.northFlow = Math.max(-50, Math.min(150, currentData.northFlow));
+            
+            updateDashboard();
+        }
+
+        // 刷新数据
+        function refreshData() {
+            simulateDataUpdate();
+            showNotification('数据已更新', 'success');
+        }
+
+        // 切换战法标签
+        function switchMethodTab(tab) {
+            // 隐藏所有内容
+            document.querySelectorAll('.method-content').forEach(content => {
+                content.style.display = 'none';
+            });
+            
+            // 重置所有按钮样式
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // 显示选中的内容
+            document.getElementById(tab + '-methods').style.display = 'block';
+            
+            // 高亮选中的按钮
+            event.target.classList.add('active');
+        }
+
+        // 显示题材详情
+        function showThemeDetail(themeName) {
+            const themeData = {
+                '半导体': {
+                    description: '受益于国产替代和AI需求爆发',
+                    leaders: ['中芯国际', '长电科技', '北方华创'],
+                    news: '美国对华芯片管制升级，国产替代加速'
+                },
+                '人工智能': {
+                    description: '大模型应用落地，算力需求激增',
+                    leaders: ['科大讯飞', '昆仑万维', '海光信息'],
+                    news: '多家公司发布AI新产品，市场情绪高涨'
+                }
+            };
+            
+            const data = themeData[themeName] || {};
+            
+            const modalBody = `
+                <h2 class="text-2xl font-bold mb-4">${themeName}</h2>
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold mb-2">题材逻辑</h3>
+                    <p class="text-gray-600">${data.description || '题材分析中...'}</p>
+                </div>
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold mb-2">龙头个股</h3>
+                    <div class="space-y-2">
+                        ${data.leaders ? data.leaders.map(leader => 
+                            `<div class="flex justify-between items-center p-2 bg-gray-50 rounded">
+                                <span>${leader}</span>
+                                <span class="text-green-500">+${(Math.random() * 10).toFixed(1)}%</span>
+                            </div>`
+                        ).join('') : '<p class="text-gray-500">加载中...</p>'}
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold mb-2">最新动态</h3>
+                    <p class="text-gray-600">${data.news || '暂无最新消息'}</p>
+                </div>
+                <button onclick="closeModal()" class="tool-button bg-blue-500 text-white">
+                    关闭
+                </button>
+            `;
+            
+            showModal(modalBody);
+        }
+
+        // 显示战法详情
+        function showMethodDetail(methodName) {
+            const methodData = {
+                '爆量战法': {
+                    description: '爆量是主力资金进出的重要信号，通过分析成交量变化判断趋势',
+                    steps: [
+                        '1. 识别爆量：成交量较前一日放大2倍以上',
+                        '2. 判断位置：股价是否处于重要支撑位',
+                        '3. 分析性质：是建仓还是出货',
+                        '4. 确认信号：后续能否保持量能'
+                    ],
+                    risk: '成功率65%，适用于震荡市，需要严格止损'
+                },
+                '三一模式': {
+                    description: '9:15-9:20竞价阶段的快速识别方法',
+                    steps: [
+                        '1. 9:15观察竞价量比',
+                        '2. 9:18-9:19分析资金流向',
+                        '3. 9:20确认最终价格',
+                        '4. 9:25前制定操作预案'
+                    ],
+                    risk: '成功率70%，适用于强势市，需要快速决策'
+                }
+            };
+            
+            const data = methodData[methodName] || {};
+            
+            const modalBody = `
+                <h2 class="text-2xl font-bold mb-4">${methodName}</h2>
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold mb-2">战法说明</h3>
+                    <p class="text-gray-600">${data.description || '战法详细介绍中...'}</p>
+                </div>
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold mb-2">操作步骤</h3>
+                    <ul class="space-y-2">
+                        ${data.steps ? data.steps.map(step => 
+                            `<li class="flex items-start">
+                                <i class="ri-checkbox-circle-line text-green-500 mr-2 mt-1"></i>
+                                <span>${step}</span>
+                            </li>`
+                        ).join('') : '<li class="text-gray-500">步骤制定中...</li>'}
+                    </ul>
+                </div>
+                <div class="mb-6 p-4 bg-amber-50 rounded-lg">
+                    <h3 class="text-lg font-bold mb-2 text-amber-600">⚠️ 风险提示</h3>
+                    <p class="text-gray-700">${data.risk || '请谨慎使用，严格止损'}</p>
+                </div>
+                <button onclick="closeModal()" class="tool-button bg-blue-500 text-white">
+                    关闭
+                </button>
+            `;
+            
+            showModal(modalBody);
+        }
+
+        // 显示SOP
+        function showSOP(type) {
+            const sopData = {
+                'premarket': {
+                    title: '盘前准备SOP',
+                    content: `
+                        <h3 class="text-lg font-bold mb-4">9:15前必须完成的十件事</h3>
+                        <div class="space-y-4">
+                            <div class="border-l-4 border-green-500 pl-4">
+                                <h4 class="font-bold">1. 外围市场检查</h4>
+                                <ul class="text-sm text-gray-600">
+                                    <li>美股收盘情况</li>
+                                    <li>欧洲市场表现</li>
+                                    <li>期货市场走势</li>
+                                </ul>
+                            </div>
+                            <div class="border-l-4 border-blue-500 pl-4">
+                                <h4 class="font-bold">2. 重要消息解读</h4>
+                                <ul class="text-sm text-gray-600">
+                                    <li>政策面消息</li>
+                                    <li>行业动态</li>
+                                    <li>公司公告</li>
+                                </ul>
+                            </div>
+                            <div class="border-l-4 border-amber-500 pl-4">
+                                <h4 class="font-bold">3. 自选股管理</h4>
+                                <ul class="text-sm text-gray-600">
+                                    <li>核心股票池更新</li>
+                                    <li>重点目标筛选</li>
+                                    <li>预案制定</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <button onclick="printSOP('premarket')" class="tool-button bg-green-500 text-white mt-4">
+                            <i class="ri-printer-line mr-2"></i>打印清单
+                        </button>
+                    `
+                },
+                'intraday': {
+                    title: '盘中执行手册',
+                    content: `
+                        <h3 class="text-lg font-bold mb-4">盘中关键时点操作要点</h3>
+                        <div class="space-y-4">
+                            <div class="bg-red-50 p-4 rounded">
+                                <h4 class="font-bold text-red-600">9:30-10:00 开盘阶段</h4>
+                                <ul class="text-sm text-gray-600">
+                                    <li>观察开盘强度</li>
+                                    <li>执行竞价预案</li>
+                                    <li>关注异动个股</li>
+                                </ul>
+                            </div>
+                            <div class="bg-amber-50 p-4 rounded">
+                                <h4 class="font-bold text-amber-600">10:00-11:00 主交易时段</h4>
+                                <ul class="text-sm text-gray-600">
+                                    <li>跟踪题材变化</li>
+                                    <li>调整仓位策略</li>
+                                    <li>严格执行纪律</li>
+                                </ul>
+                            </div>
+                            <div class="bg-blue-50 p-4 rounded">
+                                <h4 class="font-bold text-blue-600">14:00-15:00 尾盘阶段</h4>
+                                <ul class="text-sm text-gray-600">
+                                    <li>准备收盘策略</li>
+                                    <li>观察资金流向</li>
+                                    <li>制定次日计划</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <button onclick="printSOP('intraday')" class="tool-button bg-amber-500 text-white mt-4">
+                            <i class="ri-printer-line mr-2"></i>打印手册
+                        </button>
+                    `
+                },
+                'review': {
+                    title: '复盘模板',
+                    content: `
+                        <h3 class="text-lg font-bold mb-4">每日复盘要点</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block font-bold mb-2">今日市场概况</label>
+                                <textarea class="w-full p-2 border rounded" rows="3" placeholder="指数表现、成交额、涨跌比..."></textarea>
+                            </div>
+                            <div>
+                                <label class="block font-bold mb-2">热门题材分析</label>
+                                <textarea class="w-full p-2 border rounded" rows="3" placeholder="涨停数量、龙头个股、逻辑分析..."></textarea>
+                            </div>
+                            <div>
+                                <label class="block font-bold mb-2">操作总结</label>
+                                <textarea class="w-full p-2 border rounded" rows="3" placeholder="成功案例、失败教训、心得体会..."></textarea>
+                            </div>
+                        </div>
+                        <button onclick="saveReview()" class="tool-button bg-blue-500 text-white mt-4">
+                            <i class="ri-save-line mr-2"></i>保存复盘
+                        </button>
+                    `
+                }
+            };
+            
+            const data = sopData[type] || {};
+            
+            const modalBody = `
+                <h2 class="text-2xl font-bold mb-4">${data.title}</h2>
+                ${data.content}
+            `;
+            
+            showModal(modalBody);
+        }
+
+        // 开始学习
+        function startLearning(level) {
+            const learningData = {
+                'beginner': {
+                    title: '新手入门路径',
+                    content: `
+                        <h3 class="text-lg font-bold mb-4">第一阶段：基础认知（1-2个月）</h3>
+                        <div class="space-y-3">
+                            <div class="p-3 bg-green-50 rounded">
+                                <h4 class="font-bold">第1周：股市基础知识</h4>
+                                <ul class="text-sm">
+                                    <li>股市本质和规则</li>
+                                    <li>常用术语理解</li>
+                                    <li>交易软件使用</li>
+                                </ul>
+                            </div>
+                            <div class="p-3 bg-blue-50 rounded">
+                                <h4 class="font-bold">第2-4周：新手生存法则</h4>
+                                <ul class="text-sm">
+                                    <li>仓位管理基础</li>
+                                    <li>止损能力培养</li>
+                                    <li>风险意识建立</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <button onclick="enrollCourse('beginner')" class="tool-button bg-green-500 text-white mt-4">
+                            <i class="ri-play-line mr-2"></i>开始学习
+                        </button>
+                    `
+                },
+                'intermediate': {
+                    title: '进阶提升路径',
+                    content: `
+                        <h3 class="text-lg font-bold mb-4">第二阶段：技术提升（2-3个月）</h3>
+                        <div class="space-y-3">
+                            <div class="p-3 bg-amber-50 rounded">
+                                <h4 class="font-bold">第1-4周：题材规律掌握</h4>
+                                <ul class="text-sm">
+                                    <li>题材生命周期</li>
+                                    <li>情绪周期判断</li>
+                                    <li>题材轮动规律</li>
+                                </ul>
+                            </div>
+                            <div class="p-3 bg-red-50 rounded">
+                                <h4 class="font-bold">第5-8周：核心战法学习</h4>
+                                <ul class="text-sm">
+                                    <li>龙头战法实战</li>
+                                    <li>买卖点体系</li>
+                                    <li>资金管理进阶</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <button onclick="enrollCourse('intermediate')" class="tool-button bg-amber-500 text-white mt-4">
+                            <i class="ri-play-line mr-2"></i>开始学习
+                        </button>
+                    `
+                },
+                'advanced': {
+                    title: '职业选手路径',
+                    content: `
+                        <h3 class="text-lg font-bold mb-4">第三阶段：境界提升（3-6个月）</h3>
+                        <div class="space-y-3">
+                            <div class="p-3 bg-purple-50 rounded">
+                                <h4 class="font-bold">第1-8周：大局观培养</h4>
+                                <ul class="text-sm">
+                                    <li>指数结构分析</li>
+                                    <li>政策解读能力</li>
+                                    <li>国际市场联动</li>
+                                </ul>
+                            </div>
+                            <div class="p-3 bg-indigo-50 rounded">
+                                <h4 class="font-bold">第9-16周：心性修炼</h4>
+                                <ul class="text-sm">
+                                    <li>情绪控制能力</li>
+                                    <li>知行合一境界</li>
+                                    <li>长期主义哲学</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <button onclick="enrollCourse('advanced')" class="tool-button bg-purple-500 text-white mt-4">
+                            <i class="ri-play-line mr-2"></i>开始学习
+                        </button>
+                    `
+                }
+            };
+            
+            const data = learningData[level] || {};
+            
+            const modalBody = `
+                <h2 class="text-2xl font-bold mb-4">${data.title}</h2>
+                ${data.content}
+            `;
+            
+            showModal(modalBody);
+        }
+
+        // 显示模态框
+        function showModal(content) {
+            document.getElementById('modal-body').innerHTML = content;
+            document.getElementById('modal').classList.add('active');
+        }
+
+        // 关闭模态框
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        // 显示通知
+        function showNotification(message, type = 'info') {
+            const colors = {
+                success: 'bg-green-500',
+                error: 'bg-red-500',
+                warning: 'bg-amber-500',
+                info: 'bg-blue-500'
+            };
+            
+            const notification = document.createElement('div');
+            notification.className = `fixed top-20 right-4 ${colors[type]} text-white px-6 py-3 rounded-lg shadow-lg z-50`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // 工具函数
+        function printSOP(type) {
+            showNotification('正在生成打印版本...', 'info');
+            setTimeout(() => {
+                showNotification('打印准备完成！', 'success');
+            }, 1000);
+        }
+
+        function saveReview() {
+            showNotification('复盘已保存到本地', 'success');
+        }
+
+        function enrollCourse(level) {
+            showNotification(`已开始${level}学习路径`, 'success');
+        }
+
+        function toggleMenu() {
+            showNotification('功能开发中...', 'info');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            showNotification('主题切换功能开发中...', 'info');
+        }
+
+        // ESC键关闭模态框
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // 点击模态框外部关闭
+        document.getElementById('modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
