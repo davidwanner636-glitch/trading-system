@@ -1,0 +1,168 @@
+<!-- 情绪温度计 Pro - 五大维度量化模型 -->
+<div class="glass-card p-6" style="grid-column: span 2;">
+    <h3 class="text-xl font-bold mb-4 flex items-center">
+        <i class="ri-temp-hot-line text-red-500 mr-2"></i>
+        情绪温度计 Pro - 五大维度量化模型
+        <span class="premium-badge">高级版</span>
+    </h3>
+    
+    <!-- 主温度计显示 -->
+    <div class="mb-6 p-4 bg-gradient-to-r from-blue-50 via-green-50 to-red-50 rounded-xl">
+        <div class="text-center mb-3">
+            <span class="text-sm font-medium text-gray-600">综合情绪指数</span>
+            <div class="text-4xl font-bold mt-2" id="main-thermometer-value" style="background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">72</div>
+        </div>
+        <div class="emotion-meter" style="height: 50px; border-radius: 25px; background: linear-gradient(to right, #3b82f6 0%, #10b981 20%, #fbbf24 40%, #f97316 60%, #ef4444 80%, #dc2626 100%);">
+            <div class="emotion-indicator" id="main-thermometer-indicator" style="left: 72%; top: -10px; width: 4px; height: 70px; background: white; box-shadow: 0 0 20px rgba(255,255,255,0.8);">
+                <div class="emotion-label" style="left: 50%; top: -35px; transform: translateX(-50%); font-size: 1.2em; font-weight: bold;">偏热 🔥</div>
+            </div>
+        </div>
+        <div class="flex justify-between text-xs text-gray-600 mt-3 font-medium">
+            <span>❄️ 极寒<br>0-20</span>
+            <span>🥶 寒冷<br>20-40</span>
+            <span>😐 温和<br>40-60</span>
+            <span>🔥 温暖<br>60-80</span>
+            <span>🌡️ 炎热<br>80-100</span>
+        </div>
+        <div class="mt-4 p-3 bg-white rounded-lg border border-gray-200">
+            <p class="text-sm text-gray-700" id="status-description">🔥 市场处于温暖状态，情绪上升期。成交量放大，赚钱效应好。建议：积极做多，跟随主线，持股待涨。</p>
+        </div>
+    </div>
+
+    <!-- 五大维度卡片 -->
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-3 mb-6">
+        <div class="p-3 bg-blue-50 rounded-lg border border-blue-200">
+            <div class="text-xs text-blue-600 font-medium mb-1">📈 成交量</div>
+            <div class="text-xl font-bold text-blue-700" id="dim-volume">65</div>
+            <div class="text-xs text-gray-500">放量</div>
+        </div>
+        <div class="p-3 bg-green-50 rounded-lg border border-green-200">
+            <div class="text-xs text-green-600 font-medium mb-1">⚖️ 涨跌比</div>
+            <div class="text-xl font-bold text-green-700" id="dim-ratio">78</div>
+            <div class="text-xs text-gray-500">3:1</div>
+        </div>
+        <div class="p-3 bg-amber-50 rounded-lg border border-amber-200">
+            <div class="text-xs text-amber-600 font-medium mb-1">👑 龙头</div>
+            <div class="text-xl font-bold text-amber-700" id="dim-leader">70</div>
+            <div class="text-xs text-gray-500">4 板</div>
+        </div>
+        <div class="p-3 bg-red-50 rounded-lg border border-red-200">
+            <div class="text-xs text-red-600 font-medium mb-1">🔥 题材</div>
+            <div class="text-xl font-bold text-red-700" id="dim-theme">75</div>
+            <div class="text-xs text-gray-500">AI+ 机器人</div>
+        </div>
+        <div class="p-3 bg-purple-50 rounded-lg border border-purple-200">
+            <div class="text-xs text-purple-600 font-medium mb-1">🌍 大盘</div>
+            <div class="text-xl font-bold text-purple-700" id="dim-market">72</div>
+            <div class="text-xs text-gray-500">上升通道</div>
+        </div>
+    </div>
+
+    <!-- 手动调节滑块 -->
+    <div class="mb-4 p-4 bg-gray-50 rounded-xl">
+        <h4 class="text-sm font-bold text-gray-700 mb-3 flex items-center">
+            <i class="ri-sliders-line mr-2"></i>手动调节五大维度
+        </h4>
+        <div class="grid grid-cols-1 gap-3">
+            <div>
+                <div class="flex justify-between text-xs mb-1">
+                    <span class="text-gray-600">📈 成交量</span>
+                    <span class="font-bold text-blue-600" id="val-volume">65</span>
+                </div>
+                <input type="range" min="0" max="100" value="65" class="w-full" id="input-volume" oninput="updateDimension('volume', this.value)">
+            </div>
+            <div>
+                <div class="flex justify-between text-xs mb-1">
+                    <span class="text-gray-600">⚖️ 涨跌比</span>
+                    <span class="font-bold text-green-600" id="val-ratio">78</span>
+                </div>
+                <input type="range" min="0" max="100" value="78" class="w-full" id="input-ratio" oninput="updateDimension('ratio', this.value)">
+            </div>
+            <div>
+                <div class="flex justify-between text-xs mb-1">
+                    <span class="text-gray-600">👑 龙头</span>
+                    <span class="font-bold text-amber-600" id="val-leader">70</span>
+                </div>
+                <input type="range" min="0" max="100" value="70" class="w-full" id="input-leader" oninput="updateDimension('leader', this.value)">
+            </div>
+            <div>
+                <div class="flex justify-between text-xs mb-1">
+                    <span class="text-gray-600">🔥 题材</span>
+                    <span class="font-bold text-red-600" id="val-theme">75</span>
+                </div>
+                <input type="range" min="0" max="100" value="75" class="w-full" id="input-theme" oninput="updateDimension('theme', this.value)">
+            </div>
+            <div>
+                <div class="flex justify-between text-xs mb-1">
+                    <span class="text-gray-600">🌍 大盘</span>
+                    <span class="font-bold text-purple-600" id="val-market">72</span>
+                </div>
+                <input type="range" min="0" max="100" value="72" class="w-full" id="input-market" oninput="updateDimension('market', this.value)">
+            </div>
+        </div>
+        <button onclick="calculateEmotion()" class="w-full mt-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 rounded-lg font-medium hover:shadow-lg transition">
+            🧮 重新计算情绪指数
+        </button>
+    </div>
+
+    <!-- 维度说明 -->
+    <div class="text-xs text-gray-600 space-y-2">
+        <div class="flex items-start">
+            <span class="mr-2">📈</span>
+            <span><strong>成交量：</strong>市场活跃度，关注量能是否持续健康</span>
+        </div>
+        <div class="flex items-start">
+            <span class="mr-2">⚖️</span>
+            <span><strong>涨跌比：</strong>赚钱效应，上涨家数/下跌家数比例</span>
+        </div>
+        <div class="flex items-start">
+            <span class="mr-2">👑</span>
+            <span><strong>龙头：</strong>市场风向标，连板高度和晋级率</span>
+        </div>
+        <div class="flex items-start">
+            <span class="mr-2">🔥</span>
+            <span><strong>题材：</strong>主线清晰度，题材容量和持续性</span>
+        </div>
+        <div class="flex items-start">
+            <span class="mr-2">🌍</span>
+            <span><strong>大盘：</strong>系统性风险，指数位置和趋势</span>
+        </div>
+    </div>
+</div>
+
+<script>
+// 五大维度情绪计算函数
+function updateDimension(dim, value) {
+    document.getElementById(`val-${dim}`).textContent = value;
+    document.getElementById(`dim-${dim}`).textContent = value;
+    calculateEmotion();
+}
+
+function calculateEmotion() {
+    const volume = parseInt(document.getElementById('input-volume').value);
+    const ratio = parseInt(document.getElementById('input-ratio').value);
+    const leader = parseInt(document.getElementById('input-leader').value);
+    const theme = parseInt(document.getElementById('input-theme').value);
+    const market = parseInt(document.getElementById('input-market').value);
+    
+    const total = Math.round((volume + ratio + leader + theme + market) / 5);
+    
+    // 更新主温度计
+    document.getElementById('main-thermometer-value').textContent = total;
+    document.getElementById('main-thermometer-indicator').style.left = total + '%';
+    
+    // 更新状态描述
+    const descEl = document.getElementById('status-description');
+    if (total <= 20) {
+        descEl.textContent = '❄️ 市场处于极寒状态，情绪冰点。建议：空仓观望，等待情绪拐点。';
+    } else if (total <= 40) {
+        descEl.textContent = '🥶 市场处于寒冷状态，情绪退潮期。建议：轻仓试错，关注新题材。';
+    } else if (total <= 60) {
+        descEl.textContent = '😐 市场处于温和状态，情绪震荡期。建议：中等仓位，精选个股。';
+    } else if (total <= 80) {
+        descEl.textContent = '🔥 市场处于温暖状态，情绪上升期。建议：积极做多，跟随主线。';
+    } else {
+        descEl.textContent = '🌡️ 市场处于炎热状态，情绪高潮期。建议：持股为主，逐步兑现。';
+    }
+}
+</script>

@@ -1131,3 +1131,32 @@
     </script>
 </body>
 </html>
+<!-- 情绪温度计 Pro 增强脚本 -->
+<script>
+// 五大维度情绪计算
+const emotionDimensions = {
+    volume: 65,
+    ratio: 78,
+    leader: 70,
+    theme: 75,
+    market: 72
+};
+
+function updateDimensionUI() {
+    const total = Math.round((emotionDimensions.volume + emotionDimensions.ratio + emotionDimensions.leader + emotionDimensions.theme + emotionDimensions.market) / 5);
+    
+    // 更新显示
+    document.getElementById('main-thermometer-value').textContent = total;
+    document.getElementById('main-thermometer-indicator').style.left = total + '%';
+    
+    ['volume', 'ratio', 'leader', 'theme', 'market'].forEach(dim => {
+        const el = document.getElementById(`dim-${dim}`);
+        const valEl = document.getElementById(`val-${dim}`);
+        if (el) el.textContent = emotionDimensions[dim];
+        if (valEl) valEl.textContent = emotionDimensions[dim];
+    });
+}
+
+// 页面加载后初始化
+document.addEventListener('DOMContentLoaded', updateDimensionUI);
+</script>
