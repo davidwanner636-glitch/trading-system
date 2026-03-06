@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>股市修行录 - 智能交易系统</title>
+    <!-- v20260306-1045 - 修复小数点问题 -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
@@ -926,7 +927,7 @@
 
         // 更新仪表盘
         function updateDashboard() {
-            document.getElementById('emotion-score').textContent = currentData.emotionScore;
+            document.getElementById('emotion-score').textContent = Math.round(currentData.emotionScore);
             document.getElementById('limit-up-count').textContent = currentData.limitUp;
             document.getElementById('limit-down-count').textContent = currentData.limitDown;
             document.getElementById('volume').textContent = 
@@ -960,13 +961,13 @@
                 }
             });
             
-            document.getElementById('emotion-total').textContent = currentData.emotionScore;
+            document.getElementById('emotion-total').textContent = Math.round(currentData.emotionScore);
         }
 
         // 模拟数据更新
         function simulateDataUpdate() {
             currentData.emotionScore += Math.random() * 6 - 3;
-            currentData.emotionScore = Math.max(0, Math.min(100, currentData.emotionScore));
+            currentData.emotionScore = Math.round(Math.max(0, Math.min(100, currentData.emotionScore)));
             
             currentData.limitUp += Math.floor(Math.random() * 5) - 2;
             currentData.limitUp = Math.max(0, currentData.limitUp);
@@ -1341,11 +1342,11 @@ function updateModalDisplay() {
     document.getElementById('modal-thermometer-indicator').style.left = total + '%';
     
     // 更新各维度显示
-    document.getElementById('modal-dim-volume').textContent = emotionData.volume;
-    document.getElementById('modal-dim-ratio').textContent = emotionData.ratio;
-    document.getElementById('modal-dim-leader').textContent = emotionData.leader;
-    document.getElementById('modal-dim-theme').textContent = emotionData.theme;
-    document.getElementById('modal-dim-market').textContent = emotionData.market;
+    document.getElementById('modal-dim-volume').textContent = Math.round(emotionData.volume);
+    document.getElementById('modal-dim-ratio').textContent = Math.round(emotionData.ratio);
+    document.getElementById('modal-dim-leader').textContent = Math.round(emotionData.leader);
+    document.getElementById('modal-dim-theme').textContent = Math.round(emotionData.theme);
+    document.getElementById('modal-dim-market').textContent = Math.round(emotionData.market);
     
     // 更新详细数据
     updateDimensionDetails();
@@ -1441,8 +1442,8 @@ function updateDimensionUI() {
     ['volume', 'ratio', 'leader', 'theme', 'market'].forEach(dim => {
         const el = document.getElementById(`dim-${dim}`);
         const valEl = document.getElementById(`val-${dim}`);
-        if (el) el.textContent = emotionDimensions[dim];
-        if (valEl) valEl.textContent = emotionDimensions[dim];
+        if (el) el.textContent = Math.round(emotionDimensions[dim]);
+        if (valEl) valEl.textContent = Math.round(emotionDimensions[dim]);
     });
 }
 

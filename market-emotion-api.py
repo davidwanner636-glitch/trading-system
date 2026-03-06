@@ -148,7 +148,7 @@ def get_market_emotion():
         scores = calculate_scores(volume, up_down_ratio, leader_height, theme_change, index_change)
         
         # 计算综合分数
-        total_score = round(sum(scores.values()) / 5)
+        total_score = int(round(sum(scores.values()) / 5))
         
         # 确定状态
         if total_score <= 20:
